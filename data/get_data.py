@@ -2,7 +2,7 @@
 import pandas as pd
 
 # Définition de la fonction de prétraitement des données
-def preprocess_data(file_path):
+def open_and_process_data(file_path):
     # Chargement des données
     df = pd.read_csv(file_path)
     
@@ -47,6 +47,6 @@ def preprocess_data(file_path):
 # Test de la fonction de prétraitement des données
 if __name__ == "__main__":
     file_path = "./data/startup_data.csv"
-    processed_data = preprocess_data(file_path)
+    processed_data = open_and_process_data(file_path)
     print(processed_data.columns)
     print(processed_data.head())
