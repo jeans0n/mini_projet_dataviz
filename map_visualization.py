@@ -2,6 +2,7 @@ import folium
 import pandas as pd
 import numpy as np
 import geopandas as gpd
+from generate_geodata import get_geodata
 
 def init_map() -> folium.Map:
     return folium.Map(location=[37.0902, -95.7129], zoom_start=4.45, tiles=None)
@@ -60,18 +61,20 @@ def add_info(map, startUp_data, startups=False, relationships=False, success_cou
     return map
 
 
-def create_3maps(startUp_data) -> list[folium.Map]:
-    maps = []
+def create_3maps_dict(startUp_data) -> dict[str, folium.Map] :
+    maps = {}
     
-    maps.append(add_info(init_map(), startUp_data, startups=True))
-    maps.append(add_info(init_map(), startUp_data, relationships=True))
-    maps.append(add_info(init_map(), startUp_data, startups=True, success_count=True))
+    maps['startups'] = add_info(init_map(), startUp_data, startups=True)
+    maps['relationships'] = add_info(init_map(), startUp_data, relationships=True)
+    maps['success_ratio'] = add_info(init_map(), startUp_data, startups=True, success_count=True)
+
+    maps
     
     return maps
 
 if __name__ == "__main__":
-    startUp_data = gpd.read_file("updated-us-state-boundaries.geojson")
-    maps = create_3maps(startUp_data)
+    startUp_data = get_geodata()
+    maps = create_3maps_dict(startUp_data)
     
-    for i, map in enumerate(maps):
-        map.save(f'folium_map_nbstartups{i}.html')
+    for key in maps:
+        maps[key].save(f'{key}.html')
