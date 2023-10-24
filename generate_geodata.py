@@ -1,6 +1,7 @@
 import geopandas as gpd
 import pandas as pd
 from get_data import open_and_process_data
+import numpy as np
 
 def get_geodata() : 
     return gpd.read_file("updated-us-state-boundaries.geojson")
@@ -32,6 +33,7 @@ def update_geojson(geojson_path, data):
     average_relationships_dict = dict(zip(average_relationships['state_code'], average_relationships['relationships']))
 
 
+
     # Convert the resulting Series to a dictionary
     success_dict = success_counts.to_dict()
 
@@ -39,6 +41,9 @@ def update_geojson(geojson_path, data):
     startUp_data['startups'] = startUp_data['stusab'].map(comptage_entreprises).fillna(0).astype(int)
     startUp_data['success_count'] = startUp_data['stusab'].map(success_dict).fillna(0).astype(int)
     startUp_data['average_relationships'] = startUp_data['stusab'].map(average_relationships_dict).fillna(0)
+     # Calculer le ratio de succès pour chaque état
+    startUp_data['success_ratio'] = np.divide(startUp_data['success_count'], startUp_data['startups'], out=np.zeros_like(startUp_data['success_count'], dtype=float), where=startUp_data['startups']!=0)
+
 
     # Enregistrer le fichier GeoJSON mis à jour
     startUp_data.to_file("updated-us-state-boundaries.geojson", driver='GeoJSON')
