@@ -1,9 +1,6 @@
 import geopandas as gpd
 import pandas as pd
-from data.get_data import open_and_process_data
-
-startUp_data = gpd.read_file("us-state-boundaries.geojson")
-
+from get_data import open_and_process_data
 
 def update_geojson(geojson_path, data):
     # Charger les données GeoJSON
@@ -30,6 +27,6 @@ def update_geojson(geojson_path, data):
 
 if __name__ == "__main__":
     geojson_path = "us-state-boundaries.geojson"
-    file = "./data/startup_data.csv"
-    df = open_and_process_data("../data/startup_data.csv")
+    file = "startup_data.csv"
+    df = open_and_process_data("startup_data.csv")
     update_geojson(geojson_path, df)
