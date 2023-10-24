@@ -2,7 +2,7 @@
 import pandas as pd
 
 # Définition de la fonction de prétraitement des données
-def open_and_process_data(file_path):
+def open_and_process_data(file_path) -> pd.DataFrame :
     # Chargement des données
     df = pd.read_csv(file_path)
     
